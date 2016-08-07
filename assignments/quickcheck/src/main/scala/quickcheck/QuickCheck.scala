@@ -59,4 +59,19 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
 
     actualMin == meldedMin
   }
+
+  def isEqual(h1: H, h2: H): Boolean = {
+    if (isEmpty(h1) && isEmpty(h2)) true
+    else {
+      if (findMin(h1) == findMin(h2)) isEqual(deleteMin(h1), deleteMin(h2))
+      else false
+    }
+  }
+
+  property("meld3") = forAll { (h1: H, h2: H) =>
+    val mh1 = meld(h1, h2)
+    val mh2 = meld(deleteMin(h1), insert(findMin(h1), h2))
+
+    isEqual(mh1, mh2)
+  }
 }
