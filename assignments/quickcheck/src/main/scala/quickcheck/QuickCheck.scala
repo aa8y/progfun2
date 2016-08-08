@@ -36,13 +36,13 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     isEmpty(h)
   }
 
-  def isOrdered(h: H): Boolean = {
-    if (isEmpty(h)) return true
+  def isOrdered(h: H): Boolean = isEmpty(h) || {
     val currentMin = findMin(h)
     val nextHeap = deleteMin(h)
-    if (isEmpty(nextHeap)) return true
-    val nextMin = findMin(nextHeap)
-    currentMin <= nextMin && isOrdered(nextHeap)
+    isEmpty(nextHeap) || {
+      val nextMin = findMin(nextHeap)
+      currentMin <= nextMin && isOrdered(nextHeap)
+    }
   }
 
   property("ordered1") = forAll { h: H => isOrdered(h) }
